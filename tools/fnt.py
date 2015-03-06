@@ -76,6 +76,8 @@ assert not -1 in sizes [ 33: ]
 
 totalsize = sum( sizes[33:]  )
 
+print "// Machine-generated from %s by tools/fnt.py, do not edit." % ( sys.argv[1], )
+print ""
 print "#define VDATASZ %d" % ( totalsize, )
 print "#define NUMGLYPHS 95"
 
