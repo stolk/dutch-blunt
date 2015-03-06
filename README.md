@@ -16,6 +16,8 @@ Dutch-Blunt comes with a python script that will read the wavefront OBJ file and
 The glyph data containst glyph widths, the triangle vertices, the vertex count, and an offset into a global vertex data set.
 
 ## The License
+The Dutch-Blunt font, and its supporting software is (c)2015 by Abraham Stolk.
+
 The font 'Dutch-Blunt' is licensed under the 
 [SIL OPEN FONT LICENSE.](http://opensource.org/licenses/OFL-1.1)
 
