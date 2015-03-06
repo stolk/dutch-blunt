@@ -17,6 +17,24 @@ The font was created in Wings3D and exported to Wavefront OBJ.
 Dutch-Blunt comes with a python script that will read the wavefront OBJ file and create C-source code.
 The glyph data containst glyph widths, the triangle vertices, the vertex count, and an offset into a global vertex data set.
 
+A C interface is provided to convert an ASCII string into triangle vertices that can be fed into e.g. OpenGL.
+
+	/*!
+	 * Convert an ascii string to a stream of vertex data.
+	 * Returns the number of triangles(x,y,x,y,x,y) written to the buffer.
+	 */
+	int dblunt_string_to_vertices
+	(
+	        const char* str,                //!< characters to render.
+	        float* destbuf,                 //!< output buffer to hold vertices.
+	        int destbufsz,                  //!< size of output buffer in bytes.
+	        float posx, float posy,         //!< target position for text render.
+	        float sclx, float scly,         //!< scale of the text render.
+	        int* numlines,                  //!< out: nr of lines to be rendered.
+	        int* maxlinelen                 //!< out: longest line to be rendered.
+	);
+
+
 ## The License
 The Dutch-Blunt font, and its supporting software is (c)2015 by Abraham Stolk.
 
