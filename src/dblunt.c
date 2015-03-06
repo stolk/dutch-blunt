@@ -31,7 +31,7 @@ int dblunt_string_to_vertices
 	sclx *= 0.2f;	// The 'M' glyph has size 4x5, so we compensate.
 	scly *= 0.2f;
 	const int l = (int) strlen(str);
-	const int linespacing = 1.2f * 5.0f * scly;
+	const float linespacing = 1.2f * 5.0f * scly;
 	float x = posx;
 	float y = posy;
 	*numlines = 1;
@@ -41,16 +41,18 @@ int dblunt_string_to_vertices
 		if ( c == '\n' )	// carriage return.
 		{
 			y -= linespacing;
-			x = 0.0f;
+			x = posx;
 			*numlines += 1;
 		}
-		if ( c < 40 || c >= 96 )
+		if  ( c == ' ' )
+			x += 3.0f * sclx;
+		if ( c < 33 || c > 127 )
 			continue;	// only render ascii 33 to 127
-		c -= 40;
-		const int width = widths[ c ];
-		const int sz    = sizes [ c ];
-		const int voffs = vdataoffsets[ c ];
-		const int trias = sz/3;
+		c -= 33;
+		const float width = widths[ c ];
+		const int   sz    = sizes [ c ];
+		const int   voffs = vdataoffsets[ c ];
+		const int   trias = sz/3;
 		if ( trias_written + trias <= tri_capacity )
 		{
 			for ( int vnr=0; vnr<sz; ++vnr )

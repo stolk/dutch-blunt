@@ -2,6 +2,8 @@
 Low poly font (plus rendering system.)
 Uses triangles not textures, for always sharp edges.
 
+![Sample use of font](sample/textsample700.png "Sample use of font")
+
 ## The Font
 Dutch-Blunt is both the name of the minimalistic font that I created, and its rendering API.
 The font was created with the following criteria:
