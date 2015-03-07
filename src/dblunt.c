@@ -21,8 +21,8 @@ int dblunt_string_to_vertices
 	int destbufsz, 			//!< size of output buffer in bytes.
 	float posx, float posy,		//!< target position for text render.
 	float sclx, float scly,		//!< scale of the text render.
-	int* numlines,			//!< out: nr of lines to be rendered.
-	int* maxlinelen			//!< out: longest line to be rendered.
+	float* __restrict__ textw,	//!< out: size of longest line.
+	float* __restrict__ texth	//!< out: height of text.
 )
 {
 	int trias_written = 0;
@@ -31,18 +31,20 @@ int dblunt_string_to_vertices
 	sclx *= 0.2f;	// The 'M' glyph has size 4x5, so we compensate.
 	scly *= 0.2f;
 	const int l = (int) strlen(str);
-	const float linespacing = 1.2f * 5.0f * scly;
+	const float linepitch = 1.25f * 5.0f * scly;
+	const float linespacing = 0.25f * 5.0f * scly;
 	float x = posx;
-	float y = posy;
-	*numlines = 1;
+	float y = posy - 5.0f*scly;
+	float maxx = x;
+	int numlines = 1;
 	for ( int charnr=0; charnr<l; ++charnr )
 	{
 		int c = str[ charnr ];
 		if ( c == '\n' )	// carriage return.
 		{
-			y -= linespacing;
+			y -= linepitch;
 			x = posx;
-			*numlines += 1;
+			numlines += 1;
 		}
 		if  ( c == ' ' )
 			x += 3.0f * sclx;
@@ -53,6 +55,7 @@ int dblunt_string_to_vertices
 		const int   sz    = sizes [ c ];
 		const int   voffs = vdataoffsets[ c ];
 		const int   trias = sz/3;
+		if ( x + width*sclx > maxx ) maxx = x + width*sclx;
 		if ( trias_written + trias <= tri_capacity )
 		{
 			for ( int vnr=0; vnr<sz; ++vnr )
@@ -60,12 +63,14 @@ int dblunt_string_to_vertices
 				const float vx = vdata[ voffs+vnr ][ 0 ];
 				const float vy = vdata[ voffs+vnr ][ 1 ];
 				*buf_writer++ = x + vx * sclx;
-				*buf_writer++ = y + ( vy - 2.5f ) * scly;
+				*buf_writer++ = y + vy * scly;
 			}
 			x += ( width + 1.0f ) * sclx;	// advance to next pos
 			trias_written += trias;
 		}
 	}
+	*texth = numlines * linepitch - 1 * linespacing;
+	*textw = maxx - posx;
 	return trias_written;
 }
 
