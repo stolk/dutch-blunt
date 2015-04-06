@@ -8,8 +8,8 @@ def process_blob( blob, indexoffset ) :
 	lines = [ l.strip() for l in lines ]
 	name = lines[ 0 ]
 	nr = int( name[1:], 16 )
-	row = (nr-24) / 8
-	col = (nr-24) % 8
+	row = (nr-16) / 8
+	col = (nr-16) % 8
 	yoff = row*6
 	xoff = col*6
 	vlines = [ l for l in lines if "v " in l ]
@@ -57,7 +57,7 @@ blob = f.read()
 f.close()
 
 blobs = blob.split( "o " )[ 1: ]
-assert len(blobs) == 104-1
+assert len(blobs) == 112-1
 
 widths  = [ 0 for x in range(128) ]
 sizes   = [ 0 for x in range(128) ]
@@ -74,16 +74,16 @@ for blob in blobs :
 assert not -1 in widths[ 33: ]
 assert not -1 in sizes [ 33: ]
 
-totalsize = sum( sizes[24:]  )
+totalsize = sum( sizes[16:]  )
 
 print "// Machine-generated from %s by tools/fnt.py, do not edit." % ( sys.argv[1], )
 print ""
 print "#define VDATASZ %d" % ( totalsize, )
-print "#define NUMGLYPHS 104"
+print "#define NUMGLYPHS 112"
 
 print "// glyph widths. 1 for '!' and 4 for 'M'."
 print "static float widths[NUMGLYPHS] =\n{",
-for i,width in enumerate( widths[ 24: ] ) :
+for i,width in enumerate( widths[ 16: ] ) :
 	if i%8 == 0 :
 		print "\n  ",
 	print str(width)+",",
@@ -91,7 +91,7 @@ print "\n};"
 
 print "// glyph sizes in number of triangle vertices (multiple of 3.)"
 print "static int sizes[NUMGLYPHS] =\n{",
-for sz in sizes[24:] :
+for sz in sizes[16:] :
 	if i%8 == 0 :
 		print "\n  ",
 	print str(sz)+",",
@@ -100,7 +100,7 @@ print "\n};"
 print "// vdata offsets for each glyph."
 print "static int vdataoffsets[NUMGLYPHS] =\n{",
 vdataoff = 0
-for sz in sizes[24:] :
+for sz in sizes[16:] :
 	if i%8 == 0 :
 		print "\n  ",
 	print str(vdataoff)+",",
@@ -109,7 +109,7 @@ print "\n};"
 
 print "// vertex data for all glyphs combined."
 print "static float vdata[VDATASZ][2] =\n{"
-for stream in streams[ 24: ] :
+for stream in streams[ 16: ] :
 	if stream:
 		for v in stream:
 			print "%g,%g," % ( v[0],v[1] ),

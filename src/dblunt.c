@@ -48,7 +48,7 @@ int dblunt_string_to_vertices
 		}
 		if  ( c == ' ' )
 			x += 3.0f * sclx;
-		if ( c == 32 || c<24 || c > 127 )
+		if ( c == 32 || c<16 || c > 127 )
 			continue;	// only render ascii 24 to 127
 		c -= (128-NUMGLYPHS);
 		const float width = widths[ c ];
