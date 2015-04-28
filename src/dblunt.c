@@ -45,12 +45,15 @@ int dblunt_string_to_vertices
 			y -= linepitch;
 			x = posx;
 			numlines += 1;
+			continue;
 		}
 		if  ( c == ' ' )
+		{
 			x += 3.0f * sclx;
-		if ( c == 32 || c<16 || c > 127 )
-			continue;	// only render ascii 24 to 127
-		c -= (128-NUMGLYPHS);
+			continue;
+		}
+		if ( c > 127 )
+			continue;	// only render ascii 0 to 127
 		const float width = widths[ c ];
 		const int   sz    = sizes [ c ];
 		const int   voffs = vdataoffsets[ c ];
