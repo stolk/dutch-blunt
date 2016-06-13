@@ -77,6 +77,7 @@ assert not -1 in sizes
 totalsize = sum( sizes )
 
 print "// Machine-generated from %s by tools/fnt.py, do not edit." % ( sys.argv[1], )
+print '#pragma clang diagnostic ignored "-Wmissing-braces"'
 print ""
 print "#define VDATASZ %d" % ( totalsize, )
 print "#define NUMGLYPHS 128"
