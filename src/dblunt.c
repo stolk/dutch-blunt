@@ -37,7 +37,8 @@ int dblunt_string_to_vertices
 	float y = posy - 5.0f*scly;
 	float maxx = x;
 	int numlines = 1;
-	for ( int charnr=0; charnr<l; ++charnr )
+	int charnr;
+	for ( charnr=0; charnr<l; ++charnr )
 	{
 		int c = str[ charnr ];
 		if ( c == '\n' )	// carriage return.
@@ -61,7 +62,8 @@ int dblunt_string_to_vertices
 		if ( x + width*sclx > maxx ) maxx = x + width*sclx;
 		if ( trias_written + trias <= tri_capacity )
 		{
-			for ( int vnr=0; vnr<sz; ++vnr )
+			int vnr;
+			for ( vnr=0; vnr<sz; ++vnr )
 			{
 				const float vx = vdata[ voffs+vnr ][ 0 ];
 				const float vy = vdata[ voffs+vnr ][ 1 ];
