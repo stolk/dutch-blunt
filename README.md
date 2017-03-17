@@ -43,7 +43,8 @@ A C++ wrapper is provided, simplifying labelling multiple objects in a loop with
         S2V.Locate(x, y z);             // input location for text
         S2V.Scale( xs, ys );            // input size of text
 
-        for( int k = 0; k < count; k++ ) {
+        for( int k = 0; k < count; k++ ) 
+	{
 	    S2V.Locate( x[k], y[k], 0 );
             S2V.String( label[k] ); // convert
 	}
