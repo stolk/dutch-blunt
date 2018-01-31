@@ -10,6 +10,7 @@ extern int dblunt_string_to_vertices
 	int destbufsz, 			//!< size of output buffer in bytes.
 	float posx, float posy,		//!< target position for text render.
 	float sclx, float scly,		//!< scale of the text render.
+	float fadestart,		//!< if >=0, start fading out at this character number and write opactities.
 	float* __restrict__ textw,	//!< out: size of longest line.
 	float* __restrict__ texth	//!< out: height of text.
 );

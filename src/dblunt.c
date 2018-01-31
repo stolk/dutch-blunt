@@ -9,10 +9,10 @@
 
 #include "vdata.h"	// the font data.
 
-
 /*!
  * Convert an ascii string to a stream of vertex data.
  * Returns the number of triangles(x,y,x,y,x,y) written to the buffer.
+ * If fadestart >= 0, then opacity values are written as well: (x,y,o,x,y,o,x,y,o).
  */
 int dblunt_string_to_vertices
 (
@@ -21,13 +21,15 @@ int dblunt_string_to_vertices
 	int destbufsz, 			//!< size of output buffer in bytes.
 	float posx, float posy,		//!< target position for text render.
 	float sclx, float scly,		//!< scale of the text render.
+	float fadestart,		//!< if >=0, start fading out at this character number and write opactities.
 	float* __restrict__ textw,	//!< out: size of longest line.
 	float* __restrict__ texth	//!< out: height of text.
 )
 {
 	int trias_written = 0;
 	float* buf_writer = destbuf;
-	const int tri_capacity = destbufsz / ( 3 * 2 * sizeof(float) );
+	const int floats_per_vertex = fadestart >= 0 ? 3 : 2;
+	const int tri_capacity = destbufsz / ( 3 * floats_per_vertex * sizeof(float) );
 	sclx *= 0.2f;	// The 'M' glyph has size 4x5, so we compensate.
 	scly *= 0.2f;
 	const int l = (int) strlen(str);
@@ -37,6 +39,7 @@ int dblunt_string_to_vertices
 	float y = posy - 5.0f*scly;
 	float maxx = x;
 	int numlines = 1;
+	int numprinted = 0;
 	for ( int charnr=0; charnr<l; ++charnr )
 	{
 		int c = str[ charnr ];
@@ -67,10 +70,22 @@ int dblunt_string_to_vertices
 				const float vy = vdata[ voffs+vnr ][ 1 ];
 				*buf_writer++ = x + vx * sclx;
 				*buf_writer++ = y + vy * scly;
+				int cut = numprinted+4;
+				if ( fadestart >= 0 )
+				{
+					if ( cut < fadestart )
+						*buf_writer++ = 1.0f;
+					else
+					{
+						float o = 1.0f - 0.25f * ( cut - fadestart );
+						*buf_writer++ = o < 0 ? 0 : o;
+					}
+				}
 			}
 			x += ( width + 1.0f ) * sclx;	// advance to next pos
 			trias_written += trias;
 		}
+		numprinted++;
 	}
 	*texth = numlines * linepitch - 1 * linespacing;
 	*textw = maxx - posx;

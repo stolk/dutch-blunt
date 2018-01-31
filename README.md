@@ -30,6 +30,7 @@ A C interface is provided to convert an ASCII string into triangle vertices that
 	        int destbufsz,                  //!< size of output buffer in bytes.
 	        float posx, float posy,         //!< target position for text render.
 	        float sclx, float scly,         //!< scale of the text render.
+		float fadestart,		//!< if >=0, start fading out at this character number and write opactities.
 	        int* textw,                     //!< out: width of longest line.
 	        int* texth                      //!< out: height of text.
 	);
