@@ -2,6 +2,10 @@
 // Dutch-Blunt low poly font system.
 // (c)2015-2020 Abraham Stolk
 
+#if defined(_MSC_VER)
+#	define __restrict__ __restrict
+#endif
+
 
 extern int dblunt_string_to_vertices
 (
