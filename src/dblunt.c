@@ -166,6 +166,7 @@ int dblunt_attributed_string_to_vertices
 		}
 		numprinted++;
 	}
+	(void)numprinted;
 	*texth = numlines * linepitch - 1 * linespacing;
 	*textw = maxx - posx;
 	return trias_written;
