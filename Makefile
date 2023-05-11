@@ -1,4 +1,4 @@
-CC = clang-3.5
+CC?=clang
 
 dblunt.o: src/dblunt.c src/vdata.h
 	$(CC) -c src/dblunt.c
